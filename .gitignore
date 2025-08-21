@@ -281,6 +281,10 @@ user_data/
 chat_history/
 *.json.bak
 
+# Flask
+instance/
+.webassets-cache
+
 # Development and testing
 test_output/
 debug/

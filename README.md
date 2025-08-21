@@ -17,15 +17,26 @@ WellMind AI provides:
 
 ### Prerequisites
 - Python 3.7 or higher
-- No additional dependencies required (uses only standard library)
+- Flask and Flask-CORS (see requirements.txt)
 
 ### Installation
 1. Clone or download this repository
 2. Navigate to the project directory
-3. Run the chatbot:
+3. Install dependencies:
    ```bash
-   python main.py
+   pip install -r requirements.txt
    ```
+4. Run the web application:
+   ```bash
+   python app.py
+   ```
+5. Open your browser and go to: `http://localhost:5000`
+
+### Alternative: Console Version
+For the console-only version:
+```bash
+python main.py
+```
 
 ## 💬 How to Use
 
@@ -122,17 +133,30 @@ If you're in crisis or having thoughts of self-harm:
 
 ```
 ChatBot/
-├── main.py           # Main application and user interface
-├── wellmind_ai.py    # Core chatbot logic and response generation
-├── resources.py      # Mental health resources and wellness techniques
-└── README.md         # This file
+├── app.py               # Flask web server and API endpoints
+├── main.py              # Console application interface
+├── wellmind_ai.py       # Core chatbot logic and response generation
+├── resources.py         # Mental health resources and wellness techniques
+├── requirements.txt     # Python dependencies
+├── templates/
+│   └── index.html       # Web interface HTML template
+├── static/
+│   ├── css/
+│   │   └── style.css    # Frontend styling
+│   └── js/
+│       └── app.js       # Frontend JavaScript functionality
+└── README.md            # This file
 ```
 
 ### File Descriptions
 
-- **`main.py`**: Contains the main application loop, user interface, and command handling
+- **`app.py`**: Flask web server providing REST API endpoints for the frontend
+- **`main.py`**: Console-based interface for terminal usage
 - **`wellmind_ai.py`**: Core chatbot class with response generation logic and conversation management
 - **`resources.py`**: Mental health resources, crisis information, and wellness techniques database
+- **`templates/index.html`**: Modern, responsive web interface with chat functionality
+- **`static/css/style.css`**: Beautiful styling with gradients, animations, and responsive design
+- **`static/js/app.js`**: Frontend JavaScript handling user interactions and API communication
 
 ## 🎨 Customization
 
