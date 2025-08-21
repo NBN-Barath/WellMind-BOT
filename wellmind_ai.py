@@ -14,6 +14,7 @@ class WellMindAI:
     def __init__(self):
         self.resources = MentalHealthResources()
         self.conversation_history = []
+        self.recent_responses = {}  # Track recent responses by category to ensure variety
         
         # Predefined responses for common mental health topics
         self.stress_responses = [
@@ -59,6 +60,33 @@ class WellMindAI:
             "If sleep problems persist, it might be worth examining your daytime habits too. Getting natural sunlight in the morning helps regulate your circadian rhythm, and regular exercise (but not too close to bedtime) can improve sleep quality. Also, try to use your bed only for sleep - not for studying, watching TV, or scrolling your phone. This helps your brain associate your bed with sleep."
         ]
         
+        self.depression_responses = [
+            "I'm really glad you reached out - that takes courage, and it shows you're taking care of yourself. Feeling sad or down is a normal part of the human experience, but when these feelings persist, it's important to address them. Remember that you don't have to go through this alone. Try to maintain small daily routines - even getting dressed, eating regular meals, or taking a short walk can help when everything feels overwhelming.",
+            "Depression can make everything feel heavier and more difficult, like you're carrying an invisible weight. Please know that what you're experiencing is real and valid, and it's not a sign of weakness. Try to be gentle with yourself - you wouldn't criticize a friend for having a broken leg, so don't criticize yourself for struggling emotionally. Small acts of self-compassion can make a big difference.",
+            "When you're feeling down, it's easy to isolate yourself, but connection with others - even brief interactions - can be healing. Consider reaching out to a trusted friend, family member, or counselor. If that feels too overwhelming, even calling a mental health helpline can provide support. Remember, asking for help is a sign of strength, not weakness.",
+            "Depression often makes us believe negative thoughts about ourselves that aren't true. Try to challenge these thoughts by asking: 'Is this thought helpful? Is it based on facts or feelings? What would I tell a friend who had this thought?' Sometimes our minds are our own worst critics, but we can learn to be more compassionate with ourselves.",
+            "I want you to know that depression is treatable, and you can feel better. While it might not feel like it right now, these feelings are temporary. Try to focus on one day at a time, or even one hour at a time when things feel overwhelming. Small steps like taking a shower, eating a nutritious meal, or spending a few minutes in sunlight can help.",
+            "If you're having thoughts of self-harm or suicide, please reach out for help immediately. You matter, your life has value, and there are people who want to help you through this difficult time. Depression can make it hard to see hope, but with proper support and treatment, things can and do get better."
+        ]
+        
+        self.self_care_responses = [
+            "Self-care isn't selfish - it's essential! Think of it like putting on your own oxygen mask first on an airplane. When you take care of yourself, you're better able to handle life's challenges and support others. Self-care can be as simple as drinking enough water, taking deep breaths, or spending a few minutes doing something you enjoy. What does self-care look like for you?",
+            "Great question! Self-care isn't just bubble baths and face masks (though those can be nice too). It's about meeting your basic needs: getting enough sleep, eating nourishing foods, moving your body, connecting with others, and doing activities that recharge you. It's also about setting boundaries and saying no to things that drain your energy.",
+            "Self-care looks different for everyone. For some, it's a quiet evening with a book. For others, it's calling a friend, going for a run, or working on a creative project. The key is finding what genuinely makes you feel recharged and incorporating it regularly into your routine, not just when you're already burned out.",
+            "Remember that self-care includes mental and emotional care too. This might mean limiting news consumption if it's overwhelming, unfollowing social media accounts that make you feel bad about yourself, or practicing mindfulness. It's also about being kind to yourself in your internal dialogue - you deserve the same compassion you'd show a good friend.",
+            "Self-care doesn't have to be time-consuming or expensive. It can be taking five deep breaths, listening to your favorite song, stepping outside for fresh air, or drinking a cup of tea mindfully. The important thing is being intentional about caring for yourself regularly, not just when you're struggling.",
+            "Physical self-care is important too - this includes things like staying hydrated, eating regularly, getting some form of movement (even gentle stretching counts!), and maintaining basic hygiene. When we're stressed or overwhelmed, we sometimes neglect these basics, but they're the foundation that supports everything else."
+        ]
+        
+        self.relationship_responses = [
+            "Relationships can be both incredibly rewarding and challenging. It's normal to have conflicts and difficulties in relationships - it doesn't mean the relationship is doomed or that you're doing something wrong. Good relationships require communication, patience, and understanding from all parties involved. What specific aspect of relationships are you struggling with?",
+            "Feeling lonely or isolated is more common than you might think, especially among students. Remember that quality is more important than quantity when it comes to relationships. Having one or two close, supportive relationships is better than many superficial ones. Consider joining clubs, volunteer organizations, or study groups where you can meet like-minded people.",
+            "If you're dealing with conflict in a relationship, try to approach it with curiosity rather than judgment. Ask yourself: 'What might the other person be feeling or needing?' Often, conflicts arise from miscommunication or unmet needs rather than malicious intent. Using 'I' statements can help express your feelings without making the other person defensive.",
+            "Healthy relationships have boundaries. It's okay to say no to things that make you uncomfortable, and it's okay to ask for space when you need it. You don't have to be available to everyone all the time, and you're not responsible for managing other people's emotions. Taking care of your own emotional needs isn't selfish.",
+            "If you're feeling isolated, remember that building relationships takes time and effort. Start small - maybe smile at classmates, ask a study partner about their weekend, or participate in class discussions. Social skills are just that - skills that can be developed with practice. Don't be too hard on yourself if social interactions feel awkward at first.",
+            "Family relationships can be particularly complex because we don't choose our families, and old patterns can be hard to change. If you're struggling with family dynamics, remember that you can only control your own actions and responses. Setting boundaries with family members is healthy and necessary for your wellbeing."
+        ]
+        
         self.motivational_quotes = [
             "\"You are braver than you believe, stronger than you seem, and smarter than you think.\" - A.A. Milne",
             "\"Progress, not perfection.\" - Anonymous",
@@ -83,13 +111,16 @@ class WellMindAI:
         ]
         
         # Keywords for pattern matching
-        self.stress_keywords = ['stress', 'stressed', 'overwhelm', 'pressure', 'burden', 'too much']
-        self.motivation_keywords = ['motivation', 'motivated', 'inspire', 'lazy', 'procrastinate', 'give up']
-        self.anxiety_keywords = ['anxiety', 'anxious', 'worry', 'worried', 'panic', 'nervous', 'fear']
-        self.exam_keywords = ['exam', 'test', 'assignment', 'study', 'grade', 'deadline']
-        self.sleep_keywords = ['sleep', 'tired', 'insomnia', 'rest', 'exhausted']
-        self.quote_keywords = ['quote', 'inspiration', 'motivational', 'inspire me']
-        self.resource_keywords = ['help', 'support', 'counseling', 'therapy', 'crisis', 'helpline']
+        self.stress_keywords = ['stress', 'stressed', 'overwhelm', 'pressure', 'burden', 'too much', 'anxious', 'worried', 'tense', 'frazzled']
+        self.motivation_keywords = ['motivation', 'motivated', 'inspire', 'lazy', 'procrastinate', 'give up', 'unmotivated', 'energy', 'focus', 'drive']
+        self.anxiety_keywords = ['anxiety', 'anxious', 'worry', 'worried', 'panic', 'nervous', 'fear', 'afraid', 'scared', 'racing thoughts']
+        self.exam_keywords = ['exam', 'test', 'assignment', 'study', 'grade', 'deadline', 'academic', 'school', 'university', 'college']
+        self.sleep_keywords = ['sleep', 'tired', 'insomnia', 'rest', 'exhausted', 'sleepy', 'bedtime', 'nightmare', 'sleep schedule']
+        self.depression_keywords = ['depressed', 'sad', 'hopeless', 'empty', 'worthless', 'down', 'blue', 'miserable', 'lonely']
+        self.quote_keywords = ['quote', 'inspiration', 'motivational', 'inspire me', 'wisdom', 'encourage']
+        self.resource_keywords = ['help', 'support', 'counseling', 'therapy', 'crisis', 'helpline', 'resources', 'professional help']
+        self.self_care_keywords = ['self care', 'self-care', 'wellness', 'healthy habits', 'wellbeing', 'self love']
+        self.relationship_keywords = ['relationship', 'friend', 'family', 'social', 'alone', 'isolated', 'conflict']
     
     def get_response(self, user_input):
         """
@@ -111,16 +142,22 @@ class WellMindAI:
             response = self._get_motivational_quote()
         elif self._contains_keywords(user_input_lower, self.resource_keywords):
             response = self._get_resources_response()
+        elif self._contains_keywords(user_input_lower, self.depression_keywords):
+            response = self._get_varied_response(self.depression_responses, "depression")
+        elif self._contains_keywords(user_input_lower, self.self_care_keywords):
+            response = self._get_varied_response(self.self_care_responses, "self_care")
+        elif self._contains_keywords(user_input_lower, self.relationship_keywords):
+            response = self._get_varied_response(self.relationship_responses, "relationship")
         elif self._contains_keywords(user_input_lower, self.stress_keywords):
-            response = random.choice(self.stress_responses)
+            response = self._get_varied_response(self.stress_responses, "stress")
         elif self._contains_keywords(user_input_lower, self.motivation_keywords):
-            response = random.choice(self.motivation_responses)
+            response = self._get_varied_response(self.motivation_responses, "motivation")
         elif self._contains_keywords(user_input_lower, self.anxiety_keywords):
-            response = random.choice(self.anxiety_responses)
+            response = self._get_varied_response(self.anxiety_responses, "anxiety")
         elif self._contains_keywords(user_input_lower, self.exam_keywords):
-            response = random.choice(self.exam_responses)
+            response = self._get_varied_response(self.exam_responses, "exam")
         elif self._contains_keywords(user_input_lower, self.sleep_keywords):
-            response = random.choice(self.sleep_responses)
+            response = self._get_varied_response(self.sleep_responses, "sleep")
         elif self._is_greeting(user_input_lower):
             response = self._get_greeting_response()
         elif self._is_goodbye(user_input_lower):
@@ -133,6 +170,40 @@ class WellMindAI:
         
         return response
     
+    def _get_varied_response(self, responses, category):
+        """
+        Get a varied response, avoiding recently used ones when possible.
+        
+        Args:
+            responses (list): List of possible responses
+            category (str): Category name for tracking recent responses
+            
+        Returns:
+            str: A response that hasn't been used recently
+        """
+        # If we haven't used responses from this category recently, just pick randomly
+        if category not in self.recent_responses:
+            self.recent_responses[category] = []
+        
+        # Get available responses (excluding recently used ones)
+        recent = self.recent_responses[category]
+        available = [r for r in responses if r not in recent]
+        
+        # If all responses have been used recently, reset and use all responses
+        if not available:
+            available = responses
+            self.recent_responses[category] = []
+        
+        # Select a response
+        selected = random.choice(available)
+        
+        # Track this response (keep only last 2-3 responses to ensure variety)
+        self.recent_responses[category].append(selected)
+        if len(self.recent_responses[category]) > min(2, len(responses) - 1):
+            self.recent_responses[category].pop(0)
+        
+        return selected
+
     def _contains_keywords(self, text, keywords):
         """Check if text contains any of the specified keywords."""
         return any(keyword in text for keyword in keywords)
@@ -152,22 +223,26 @@ class WellMindAI:
         greetings = [
             "Hello! I'm WellMind AI, and I'm here to support your mental health and wellbeing. How are you feeling today?",
             "Hi there! I'm here to help with stress, motivation, and general wellbeing. What's on your mind?",
-            "Welcome! I'm WellMind AI, your friendly mental health support companion. How can I help you today?"
+            "Welcome! I'm WellMind AI, your friendly mental health support companion. How can I help you today?",
+            "Hey! Great to see you here. I'm WellMind AI, and I'm ready to chat about whatever's on your mind today.",
+            "Hello! I'm so glad you reached out. I'm here to provide support and encouragement whenever you need it. How can I help?"
         ]
-        return random.choice(greetings)
+        return self._get_varied_response(greetings, "greeting")
     
     def _get_goodbye_response(self):
         """Return a supportive goodbye response."""
         goodbyes = [
             "Take care of yourself! Remember, you're stronger than you think. Feel free to chat with me anytime you need support.",
             "Goodbye for now! Remember to be kind to yourself and take things one step at a time. I'm here whenever you need me.",
-            "See you later! Keep taking care of your mental health - you're doing great by reaching out. Stay strong!"
+            "See you later! Keep taking care of your mental health - you're doing great by reaching out. Stay strong!",
+            "Until next time! You've got this, and remember that it's okay to ask for help when you need it. Take care!",
+            "Farewell for now! Remember that every small step forward counts. You're doing better than you think. Be well!"
         ]
-        return random.choice(goodbyes)
+        return self._get_varied_response(goodbyes, "goodbye")
     
     def _get_motivational_quote(self):
         """Return a motivational quote."""
-        quote = random.choice(self.motivational_quotes)
+        quote = self._get_varied_response(self.motivational_quotes, "quotes")
         return f"Here's something to inspire you: {quote}"
     
     def _get_resources_response(self):
@@ -177,17 +252,20 @@ class WellMindAI:
     def _get_general_support_response(self):
         """Return a general supportive response."""
         responses = [
-            "I'm here to listen and support you. Sometimes just talking about what's bothering you can help. What's on your mind?",
-            "Thank you for sharing with me. Remember, it's completely normal to have ups and downs. You're not alone in this.",
-            "I hear you, and your feelings are valid. Taking care of your mental health is really important. Is there a specific area you'd like support with?",
-            "It sounds like you might be going through a tough time. Remember, seeking support is a sign of strength, not weakness. How can I help?"
+            "I'm here to listen and support you. Sometimes just talking about what's bothering you can help lighten the load. Mental health is just as important as physical health, and taking time to check in with yourself shows real self-awareness. What's on your mind today?",
+            "Thank you for sharing with me. I want you to know that whatever you're going through, your feelings are completely valid. It's normal to have ups and downs - that's part of being human. You're not alone in this, and reaching out shows real strength and courage.",
+            "I hear you, and I want you to know that your feelings matter. Taking care of your mental health is really important, and I'm glad you're here. Whether you're dealing with something specific or just need someone to talk to, I'm here to support you. Is there a particular area you'd like help with today?",
+            "It sounds like you might be going through a tough time, and I want you to know that's okay. Life can be challenging, and it's normal to struggle sometimes. Remember, seeking support is actually a sign of strength, not weakness. You've taken a positive step by reaching out. How can I best support you right now?",
+            "I'm really glad you're here and that you're taking time to focus on your wellbeing. Everyone needs support sometimes, and there's no shame in asking for help. Whether you're dealing with stress, motivation issues, relationship challenges, or just need someone to listen, I'm here for you. What would be most helpful for you today?",
+            "Thank you for trusting me with whatever you're going through. Your mental health and wellbeing are incredibly important, and I'm honored that you've chosen to reach out. Remember, you don't have to have everything figured out - it's okay to take things one step at a time. What's been on your mind lately?"
         ]
-        return random.choice(responses)
+        return self._get_varied_response(responses, "general_support")
     
     def get_conversation_history(self):
         """Return the conversation history."""
         return self.conversation_history
     
     def clear_conversation(self):
-        """Clear the conversation history."""
+        """Clear the conversation history and recent responses tracking."""
         self.conversation_history = []
+        self.recent_responses = {}  # Also reset response variety tracking
