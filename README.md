@@ -59,14 +59,6 @@ WellMind AI uses keyword recognition to provide appropriate responses for:
 - Sleep hygiene
 - General emotional support
 
-### Mental Health Resources
-Access to verified resources including:
-- Crisis hotlines and emergency support
-- National mental health organizations
-- Student-specific resources
-- Online support platforms
-- Wellness apps and tools
-
 ### Wellness Techniques
 Built-in techniques for:
 - Breathing exercises (Box breathing, 4-7-8 technique)
@@ -150,40 +142,4 @@ To add new mental health resources:
 2. Update the display methods as needed
 3. Ensure all resources are verified and appropriate
 
-## 🤝 Contributing
 
-This is an educational project designed to demonstrate supportive AI chatbot development. If you'd like to contribute:
-
-1. Ensure all mental health resources are verified and current
-2. Maintain the supportive, non-judgmental tone
-3. Test thoroughly to ensure appropriate responses
-4. Follow ethical guidelines for mental health support tools
-
-## ⚠️ Disclaimer
-
-WellMind AI is designed for educational and support purposes only. It is not a substitute for professional mental health care, medical advice, diagnosis, or treatment. 
-
-If you're experiencing a mental health crisis or emergency, please contact:
-- Emergency services (911)
-- National Suicide Prevention Lifeline (988)
-- Crisis Text Line (Text HOME to 741741)
-- Your local mental health crisis center
-
-Always seek the advice of qualified health providers with any questions regarding mental health conditions.
-
-## 📞 Support & Resources
-
-### National Resources (US)
-- **National Suicide Prevention Lifeline**: 988
-- **Crisis Text Line**: Text HOME to 741741
-- **SAMHSA National Helpline**: 1-800-662-4357
-- **National Sexual Assault Hotline**: 1-800-656-4673
-
-### Online Resources
-- National Alliance on Mental Illness (NAMI): nami.org
-- Mental Health America: mhanational.org
-- Anxiety and Depression Association: adaa.org
-
----
-
-**Remember: You are not alone. Help is available, and your mental health matters.** 💙
